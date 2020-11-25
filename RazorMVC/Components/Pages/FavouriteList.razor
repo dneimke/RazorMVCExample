@@ -1,0 +1,24 @@
+﻿@inject FavouritesDbContext db
+@inject IHttpContextAccessor context
+
+<h3>FavouriteList</h3>
+
+@foreach (var favourite in Favourites)
+{
+
+}
+
+@code {
+
+    List<Favourite> Favourites = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        var userId = context.HttpContext.User.Identity.Name;
+
+
+
+        return base.OnInitializedAsync();
+    }
+
+}

@@ -1,0 +1,23 @@
+﻿@inject IHttpContextAccessor context
+
+<h3>@Message</h3>
+
+@if (!_hasResponded)
+{
+    <button @onclick="HandleClick" class="btn btn-primary">Respond</button>
+}
+else
+{
+    <a href="/Home/Start">Get started</a>
+}
+
+
+@code {
+
+    public string Icon => _hasResponded ? "👍" : "👋";
+    public bool _hasResponded { get; set; }
+
+    public string Message => $"Hello {context.HttpContext.User.Identity.Name} {Icon}";
+
+    public void HandleClick() => _hasResponded = true;
+}

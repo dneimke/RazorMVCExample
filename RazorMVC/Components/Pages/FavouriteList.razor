@@ -1,24 +1,69 @@
 ﻿@inject FavouritesDbContext db
 @inject IHttpContextAccessor context
+@inject FavouritesDbContext dbContext
+@using Blazored.Typeahead
 
 <h3>FavouriteList</h3>
 
-@foreach (var favourite in Favourites)
+<BlazoredTypeahead SearchMethod="@FindFavourites"
+                   @bind-Value="@SelectedFavourite"
+                   Debounce="500">
+    <SelectedTemplate>
+        @context.DisplayName
+    </SelectedTemplate>
+    <ResultTemplate>
+        @context.DisplayName
+    </ResultTemplate>
+    <NotFoundTemplate>
+        Sorry, there weren't any search results.
+    </NotFoundTemplate>
+</BlazoredTypeahead>
+
+@*@foreach (var favourite in Favourites)
 {
 
-}
+}*@
 
 @code {
 
-    List<Favourite> Favourites = new();
+        protected Favourite SelectedFavourite { get; set; }
+
+        private async Task<IEnumerable<Favourite>> FindFavourites(string searchText)
+        {
+            return await Task.FromResult(Favourites.Where(x => x.DisplayName.ToLower().Contains(searchText.ToLower())).ToList());
+        }
+
 
     protected override Task OnInitializedAsync()
     {
         var userId = context.HttpContext.User.Identity.Name;
-
-
-
         return base.OnInitializedAsync();
     }
 
+
+
+    List<Favourite> Favourites = new()
+    {
+        new() { DisplayName = "AAA" },
+        new() { DisplayName = "BBB" },
+        new() { DisplayName = "CCC" },
+        new() { DisplayName = "DDD" },
+        new() { DisplayName = "EEE" },
+        new() { DisplayName = "FFF" },
+        new() { DisplayName = "GGG" },
+        new() { DisplayName = "AAA1" },
+        new() { DisplayName = "BBB1" },
+        new() { DisplayName = "CCC1" },
+        new() { DisplayName = "DDD1" },
+        new() { DisplayName = "EEE1" },
+        new() { DisplayName = "FFF1" },
+        new() { DisplayName = "GGG1" },
+        new() { DisplayName = "AAA2" },
+        new() { DisplayName = "BBB2" },
+        new() { DisplayName = "CCC2" },
+        new() { DisplayName = "DDD2" },
+        new() { DisplayName = "EEE2" },
+        new() { DisplayName = "FFF2" },
+        new() { DisplayName = "GGG2" }
+    };
 }

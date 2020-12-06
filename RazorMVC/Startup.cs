@@ -35,6 +35,11 @@ namespace RazorMVC
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
 
             services.AddServerSideBlazor();
+            
+
+            services.AddRazorPages()
+                 .AddMicrosoftIdentityUI();
+
             services.AddControllersWithViews(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -42,9 +47,6 @@ namespace RazorMVC
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
-
-            services.AddRazorPages()
-                 .AddMicrosoftIdentityUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,10 +63,11 @@ namespace RazorMVC
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                
                 endpoints.MapBlazorHub();
             });
         }
